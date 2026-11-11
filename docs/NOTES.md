@@ -101,6 +101,25 @@ reviewed 2026-09-08) and CVE-2026-102895 (GPUStack, published 2026-07-31,
 listed and reviewed 2026-11-09). Fixed versions were released 2026-07-27 and
 2026-06-18.
 
+## Unreviewed advisories
+
+`unreviewed.py` (output `data/unreviewed.md`, list `data/unreviewed.jsonl`)
+finds published repository advisories that have a GitHub-issued CVE and no
+review. Of 8,655 CVEs the GitHub CNA published from 2026-05-01, 3,775 are not
+in the reviewed dataset. 842 of those name an ecosystem GitHub reviews and are
+not reviewed under another CVE. Their median age at collection is 135 days;
+712 are older than 90 days and 135 are rated critical. This is a lower bound:
+whether a CVE has been requested is not public, so unreviewed advisories
+without a CVE cannot be found, and some of the 842 may have been declined.
+
+## Package downloads
+
+`downloads.py` (output `data/downloads.md`) groups the release-to-review wait
+by last-month downloads for npm and PyPI packages with a fix released May to
+August 2026. Packages with 10 million or more downloads a month (200 packages,
+784 advisories) waited a median of 21.8 days, and 79% of their fixes had been
+out more than 7 days at review. There is no clear trend across bands.
+
 ## Exploratory cuts
 
 `explore.py` writes `docs/EXPLORATORY.md`. Summary, for advisories published
@@ -144,9 +163,8 @@ reviews, so it has no review step to measure.
 
 ## Open questions
 
-- How many published repository advisories are never reviewed. The dataset
-  cannot see them. CVE records assigned by the GitHub CNA that link an
-  advisory absent from the global database would give a lower bound.
+- How many unreviewed advisories have no CVE yet. The lower bound above only
+  counts those with one.
 - How review order is chosen in practice.
 - Whether project-assigned CVEs fare better than GitHub-assigned ones on time
   to CVE and time to review. Needs the assigner for each CVE record.
