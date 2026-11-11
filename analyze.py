@@ -7,6 +7,10 @@ Steps measured, in days:
   C  fix release           -> GitHub review
   D  maintainer disclosure -> CVE published
 
+Further tables split the steps by review month, show how much of the
+gap between release and review survives a hold-back period, compare CVE
+publication with review, and group by severity and disclosure month.
+
 The release date of an advisory is the earliest release among its
 patched package versions.
 """
@@ -94,6 +98,63 @@ def main():
         print(f"\n## Disclosure to review, by {title}\n\n" + HEAD.format(title))
         for g in sorted(groups, key=str):
             print(row(g, groups[g]))
+    repo = [a for a in advs if a["has_repo_advisory"]]
+    for a in repo:
+        a["E"] = days(a["cve_published"], a["reviewed"])
+        a["RC"] = days(a["release"], a["cve_published"])
+    by_month = defaultdict(list)
+    for a in repo:
+        by_month[a["reviewed"][:7]].append(a)
+
+    def med(xs):
+        xs = [x for x in xs if x is not None]
+        return f"{statistics.median(xs):.1f}" if xs else ""
+
+    def share(xs, test):
+        xs = [x for x in xs if x is not None]
+        return f"{100 * sum(test(x) for x in xs) / len(xs):.0f}%" if xs else ""
+
+    print("\n## Maintainer and review steps, by review month\n\nRepository advisories only. "
+          "Medians. Release to review excludes advisories whose release date is after the review.\n\n"
+          "| review month | advisories | release to disclosure | disclosure to review | release to review |\n"
+          "|---|---|---|---|---|")
+    for m in sorted(by_month):
+        g = by_month[m]
+        print(f"| {m} | {len(g)} | {med(a['A'] for a in g)} | {med(a['B'] for a in g)} "
+              f"| {med(a['C'] for a in g if a['C'] is not None and a['C'] >= 0)} |")
+
+    print("\n## Head start left after a hold-back, by review month\n\nShare of repository advisories "
+          "whose fixed release was out more than N days before the review.\n\n"
+          "| review month | n | 3 days | 7 days | 14 days |\n|---|---|---|---|---|")
+    for m in sorted(by_month):
+        c = [a["C"] for a in by_month[m] if a["C"] is not None and a["C"] >= 0]
+        print(f"| {m} | {len(c)} | " + " | ".join(share(c, lambda x, n=n: x > n) for n in (3, 7, 14)) + " |")
+
+    print("\n## CVE publication against review, by review month\n\nRepository advisories with a CVE. "
+          "A positive lead means the CVE was public before the review.\n\n"
+          "| review month | n | CVE first | median CVE lead | median release to CVE |\n|---|---|---|---|---|")
+    for m in sorted(by_month):
+        g = [a for a in by_month[m] if a["E"] is not None]
+        print(f"| {m} | {len(g)} | {share([a['E'] for a in g], lambda x: x > 0)} | {med(a['E'] for a in g)} "
+              f"| {med(a['RC'] for a in g if a['RC'] is not None and a['RC'] >= 0)} |")
+
+    surge = [a for a in repo if a["reviewed"] >= "2026-05" and a["B"] is not None]
+    print("\n## Disclosure to review by severity, reviewed from May 2026\n\n"
+          "| severity | n | median | p75 | within 7 days |\n|---|---|---|---|---|")
+    for sev in ("critical", "high", "medium", "low"):
+        x = sorted(a["B"] for a in surge if a["severity"] == sev)
+        if x:
+            print(f"| {sev} | {len(x)} | {statistics.median(x):.1f} | {pct(x, .75):.1f} | {share(x, lambda v: v <= 7)} |")
+
+    by_disc = defaultdict(list)
+    for a in repo:
+        if a["B"] is not None and a["repo_published"][:7] >= meta["since"][:7]:
+            by_disc[a["repo_published"][:7]].append(a["B"])
+    print("\n## Disclosure to review, by disclosure month\n\nOnly advisories already reviewed are counted, "
+          "so recent months understate the wait.\n\n" + HEAD.format("disclosure month"))
+    for m in sorted(by_disc):
+        print(row(m, by_disc[m]))
+
     b = sorted(a["B"] for a in advs if a["B"] is not None)
     if b:
         print("\n## Disclosure to review, share within\n\n| within | share |\n|---|---|")
