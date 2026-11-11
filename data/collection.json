@@ -1,0 +1,9 @@
+{
+  "since": "2025-08-22",
+  "until": "2026-11-11",
+  "collected_at": "2026-11-11T16:09:09+00:00",
+  "advisories": 14173,
+  "partial": false,
+  "repo_advisories_fetched": 10873,
+  "repo_advisories_total": 10873
+}
