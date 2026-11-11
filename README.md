@@ -18,6 +18,7 @@ For each advisory reviewed in a date window it records four public timestamps:
     python3 collect.py --since 2025-08-22
     python3 analyze.py > data/report.md
     python3 curl_cna.py > data/curl-cna.md
+    python3 kev_check.py > data/kev.md
     python3 repo_meta.py
     python3 explore.py > docs/EXPLORATORY.md
 
