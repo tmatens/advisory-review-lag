@@ -15,6 +15,7 @@ that is unset. It needs no permissions: all data read here is public.
 """
 import argparse
 import calendar
+import http.client
 import json
 import os
 import re
@@ -124,7 +125,7 @@ def http_json(url, headers=None, retries=4):
                 time.sleep(2 ** attempt)
                 continue
             return None, None
-        except (urllib.error.URLError, TimeoutError, json.JSONDecodeError):
+        except (urllib.error.URLError, http.client.HTTPException, OSError, json.JSONDecodeError):
             time.sleep(2 ** attempt)
     return None, None
 
