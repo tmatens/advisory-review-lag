@@ -54,3 +54,9 @@ whose data ends on 2025-08-21. The default window here starts the next day.
   usually visible earlier.
 - **Fields can be edited after review.** A patched version changed later can
   produce a release date after the disclosure date.
+
+## Licence
+
+The code is under the MIT licence (`LICENSE`). The dataset and reports under
+`data/` are under Creative Commons Attribution 4.0 (`LICENSE-DATA`): reuse them
+freely, with credit and a link to this repository.
