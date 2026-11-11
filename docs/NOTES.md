@@ -82,6 +82,24 @@ Repository advisories, by month of review, medians in days.
   percentile 86). Later months look faster but only count advisories already
   reviewed.
 
+## Exploratory cuts
+
+`explore.py` writes `docs/EXPLORATORY.md`. Summary, for advisories published
+May to September 2026:
+
+- Severity made no difference to the wait: medians of 18.6 (critical), 19.2
+  (high), 16.8 (medium) and 20.7 (low) days.
+- Project popularity is weakly related (rank correlation with stars about
+  -0.16), with the difference at the extremes: under 100 stars 32.6 days,
+  50,000 and up 8.1 days. Repositories under a year old waited 34.9 days.
+- Projects with a single advisory waited 34.5 days; those with more than 20,
+  13.8 days. The effect holds within star bands.
+- The count of published-but-unreviewed advisories rose from about 30 to 1,250
+  by 1 July 2026 and was 762 on 1 October.
+
+These are not yet used in any write-up. Stars are a collection-time snapshot
+and measure attention, not usage; package downloads have not been pulled.
+
 ## curl as a project-run CNA
 
 `curl_cna.py` compares curl's advisory publish time with the CVE record
