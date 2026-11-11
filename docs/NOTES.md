@@ -91,6 +91,16 @@ release month it peaks at 42.4 days (July 2026); recent months are a lower
 bound because unreviewed advisories are missing. Write-ups should use release
 month and mark September and October as incomplete.
 
+## Why the most recent months cannot be read yet
+
+`docs/EXPLORATORY.md` has each release month as it looked 11 and 41 days after
+it ended. June 2026, seen 11 days after the month ended, showed 625 advisories
+and a median of 6.7 days from release to review. At collection it showed 1,457
+and 37.3. October 2026 currently shows 387 and 6.5. March 2026 looked low at
+the same stage (2.1) and stayed low (2.2), so a low early figure cannot
+distinguish a recovery from a month whose slow reviews have not happened yet.
+The chart shades the last two months for this reason.
+
 ## Known-exploited advisories
 
 `kev_check.py` matches the dataset against CISA's Known Exploited

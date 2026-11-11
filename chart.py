@@ -68,9 +68,8 @@ def main():
     band_x = x(len(data) - 1 - INCOMPLETE)
     out.append(f'<rect x="{band_x:.1f}" y="{TOP:.1f}" width="{LEFT + plot_w - band_x:.1f}" height="{plot_h:.1f}" fill="{BAND}"/>')
     out.append(f'<line x1="{band_x:.1f}" x2="{band_x:.1f}" y1="{TOP:.1f}" y2="{TOP + plot_h:.1f}" stroke="{MUTED}" stroke-width="1" stroke-dasharray="3 4"/>')
-    out.append(text((band_x + LEFT + plot_w) / 2, TOP + 24, "Incomplete", 16, INK, 600, "middle"))
-    out.append(text((band_x + LEFT + plot_w) / 2, TOP + 44, "still being", 14, SECONDARY, 400, "middle"))
-    out.append(text((band_x + LEFT + plot_w) / 2, TOP + 62, "reviewed", 14, SECONDARY, 400, "middle"))
+    out.append(text((band_x + LEFT + plot_w) / 2, TOP + 24, "Too early", 16, INK, 600, "middle"))
+    out.append(text((band_x + LEFT + plot_w) / 2, TOP + 44, "to tell", 16, INK, 600, "middle"))
     for tick in range(0, y_max + 1, 10):
         out.append(f'<line x1="{LEFT}" x2="{LEFT + plot_w}" y1="{y(tick):.1f}" y2="{y(tick):.1f}" '
                    f'stroke="{GRID if tick else MUTED}" stroke-width="1"/>')
@@ -104,7 +103,7 @@ def main():
     out.append(text(x(peak - 0.4), y(data[peak][2] / 3), "The head start", 18, INK, 600, "middle"))
     out.append(text(x(peak - 0.4), y(data[peak][2] / 3) + 22, "fix available, no alert yet", 16, SECONDARY, 400, "middle"))
     out.append(text(LEFT, H - 20, f"Source: GitHub Advisory Database reviews through {meta['until']}. The shaded months only count advisories "
-                    "already reviewed, so their real wait is longer. github.com/tmatens/advisory-review-lag", 13, MUTED))
+                    "reviewed so far. github.com/tmatens/advisory-review-lag", 13, MUTED))
     out.append("</svg>")
     (ROOT / "docs" / "head-start.svg").write_text("\n".join(out) + "\n")
 

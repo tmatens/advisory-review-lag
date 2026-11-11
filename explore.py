@@ -139,6 +139,36 @@ def main():
         print(f"| advisories from the same repository | "
               f"{spearman([counts[(a['source'] or '').lower()] for a in withmeta], waits):.3f} |")
 
+    # How a month looked shortly after it ended, against how it looks now. Shows why the
+    # most recent months cannot be read yet: slow reviews are missing until they happen.
+    from datetime import datetime as _dt, timedelta as _td, timezone as _tz
+    released = []
+    for a in repo:
+        rels = [p["release"] for p in a["packages"] if p.get("release")]
+        if rels:
+            first = min(rels, key=parse)
+            wait = days(first, a["reviewed"])
+            if wait is not None and wait >= 0:
+                released.append((first, a["reviewed"], wait))
+    print("\n## Each release month as it looked soon after it ended\n\nMedian days from fix release to review, "
+          "counting only advisories reviewed by the stated point. Recent months are shown in the main report "
+          "at roughly these ages.\n\n| release month | 11 days after month end | | 41 days after month end | | at collection | |\n"
+          "|---|---|---|---|---|---|---|\n| | advisories | median | advisories | median | advisories | median |")
+    collected = coll["collected_at"]
+    for m in sorted({r[0][:7] for r in released if r[0][:7] >= "2026-01"}):
+        year, month = int(m[:4]), int(m[5:])
+        end = _dt(year + (month == 12), month % 12 + 1, 1, tzinfo=_tz.utc)
+        cells = []
+        for offset in (10, 40):
+            as_of = (end + _td(days=offset)).isoformat()
+            if as_of > collected:
+                cells += ["", ""]
+                continue
+            seen = [r[2] for r in released if r[0][:7] == m and r[1] <= as_of]
+            cells += [str(len(seen)), f"{statistics.median(seen):.1f}" if seen else ""]
+        now = [r[2] for r in released if r[0][:7] == m]
+        print(f"| {m} | " + " | ".join(cells) + f" | {len(now)} | {statistics.median(now):.1f} |")
+
     print("\n## Review activity by weekday\n\nAll reviewed advisories.\n\n| weekday | reviews |\n|---|---|")
     wd = Counter(parse(a["reviewed"]).strftime("%A") for a in advs)
     for d in ("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"):

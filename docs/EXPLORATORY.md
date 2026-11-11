@@ -156,6 +156,25 @@ Spearman. Values near zero mean little relationship.
 | repository age | -0.078 |
 | advisories from the same repository | -0.148 |
 
+## Each release month as it looked soon after it ended
+
+Median days from fix release to review, counting only advisories reviewed by the stated point. Recent months are shown in the main report at roughly these ages.
+
+| release month | 11 days after month end | | 41 days after month end | | at collection | |
+|---|---|---|---|---|---|---|
+| | advisories | median | advisories | median | advisories | median |
+| 2026-01 | 302 | 1.3 | 336 | 1.8 | 368 | 2.1 |
+| 2026-02 | 584 | 3.3 | 644 | 3.9 | 705 | 4.7 |
+| 2026-03 | 1059 | 2.1 | 1110 | 2.2 | 1156 | 2.2 |
+| 2026-04 | 974 | 4.2 | 1060 | 5.0 | 1163 | 6.6 |
+| 2026-05 | 715 | 6.5 | 1202 | 14.3 | 1349 | 18.8 |
+| 2026-06 | 625 | 6.7 | 976 | 15.7 | 1457 | 37.3 |
+| 2026-07 | 408 | 9.3 | 603 | 15.9 | 903 | 42.4 |
+| 2026-08 | 215 | 15.1 | 442 | 31.8 | 489 | 35.3 |
+| 2026-09 | 322 | 16.1 | 452 | 19.9 | 464 | 20.0 |
+| 2026-10 | 387 | 6.5 |  |  | 387 | 6.5 |
+| 2026-11 |  |  |  |  | 45 | 0.5 |
+
 ## Review activity by weekday
 
 All reviewed advisories.

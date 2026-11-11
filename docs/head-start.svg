@@ -5,9 +5,8 @@
 <text x="80.0" y="123.0" font-family="Inter, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="19" font-weight="400" fill="#52514e" text-anchor="start">GitHub repository advisories, fixes released Aug 2025 to Oct 2026.</text>
 <rect x="817.1" y="170.0" width="122.9" height="405.0" fill="#f0efec"/>
 <line x1="817.1" x2="817.1" y1="170.0" y2="575.0" stroke="#8a8983" stroke-width="1" stroke-dasharray="3 4"/>
-<text x="878.6" y="194.0" font-family="Inter, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="16" font-weight="600" fill="#0b0b0b" text-anchor="middle">Incomplete</text>
-<text x="878.6" y="214.0" font-family="Inter, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="14" font-weight="400" fill="#52514e" text-anchor="middle">still being</text>
-<text x="878.6" y="232.0" font-family="Inter, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="14" font-weight="400" fill="#52514e" text-anchor="middle">reviewed</text>
+<text x="878.6" y="194.0" font-family="Inter, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="16" font-weight="600" fill="#0b0b0b" text-anchor="middle">Too early</text>
+<text x="878.6" y="214.0" font-family="Inter, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="16" font-weight="600" fill="#0b0b0b" text-anchor="middle">to tell</text>
 <line x1="80" x2="940" y1="575.0" y2="575.0" stroke="#8a8983" stroke-width="1"/>
 <text x="68.0" y="581.0" font-family="Inter, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="16" font-weight="400" fill="#8a8983" text-anchor="end">0</text>
 <line x1="80" x2="940" y1="494.0" y2="494.0" stroke="#e6e5e0" stroke-width="1"/>
@@ -47,5 +46,5 @@
 <text x="767.7" y="216.0" font-family="Inter, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="18" font-weight="600" fill="#0b0b0b" text-anchor="end">42 days for fixes released in July</text>
 <text x="731.1" y="460.7" font-family="Inter, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="18" font-weight="600" fill="#0b0b0b" text-anchor="middle">The head start</text>
 <text x="731.1" y="482.7" font-family="Inter, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="16" font-weight="400" fill="#52514e" text-anchor="middle">fix available, no alert yet</text>
-<text x="80.0" y="655.0" font-family="Inter, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#8a8983" text-anchor="start">Source: GitHub Advisory Database reviews through 2026-11-11. The shaded months only count advisories already reviewed, so their real wait is longer. github.com/tmatens/advisory-review-lag</text>
+<text x="80.0" y="655.0" font-family="Inter, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#8a8983" text-anchor="start">Source: GitHub Advisory Database reviews through 2026-11-11. The shaded months only count advisories reviewed so far. github.com/tmatens/advisory-review-lag</text>
 </svg>
