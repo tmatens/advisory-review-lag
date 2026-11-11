@@ -19,6 +19,8 @@ For each advisory reviewed in a date window it records four public timestamps:
     python3 analyze.py > data/report.md
     python3 curl_cna.py > data/curl-cna.md
     python3 kev_check.py > data/kev.md
+    python3 unreviewed.py > data/unreviewed.md
+    python3 downloads.py > data/downloads.md
     python3 repo_meta.py
     python3 explore.py > docs/EXPLORATORY.md
 
@@ -51,7 +53,9 @@ whose data ends on 2025-08-21. The default window here starts the next day.
 
 - **Reviewed advisories only.** An advisory that is published in a repository
   but not yet reviewed, or never reviewed, is not in the data. Waiting times
-  here are for advisories that were eventually reviewed.
+  here are for advisories that were eventually reviewed. `unreviewed.py` gives a
+  lower bound on how many are missing: 842 in-scope advisories with a CVE in
+  the 2026-11-11 snapshot.
 - **Review is prioritised.** GitHub states that repository advisories are
   prioritised by project impact and severity, so these figures do not describe
   a first-come queue.
