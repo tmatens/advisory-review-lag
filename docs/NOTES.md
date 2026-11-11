@@ -82,6 +82,25 @@ Repository advisories, by month of review, medians in days.
   percentile 86). Later months look faster but only count advisories already
   reviewed.
 
+## Grouping bias
+
+The same data gives different headline figures depending on the grouping.
+By review month the release-to-review median peaks at 53.2 days (September
+2026), inflated because most reviews that month were of older advisories. By
+release month it peaks at 42.4 days (July 2026); recent months are a lower
+bound because unreviewed advisories are missing. Write-ups should use release
+month and mark September and October as incomplete.
+
+## Known-exploited advisories
+
+`kev_check.py` matches the dataset against CISA's Known Exploited
+Vulnerabilities list; output in `data/kev.md`. 25 of 12,027 advisories with a
+CVE are listed. Two were listed while still waiting for review or on the day
+of it: CVE-2026-60004 (Gitea, published 2026-07-28, listed 2026-08-25,
+reviewed 2026-09-08) and CVE-2026-102895 (GPUStack, published 2026-07-31,
+listed and reviewed 2026-11-09). Fixed versions were released 2026-07-27 and
+2026-06-18.
+
 ## Exploratory cuts
 
 `explore.py` writes `docs/EXPLORATORY.md`. Summary, for advisories published

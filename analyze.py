@@ -130,6 +130,21 @@ def main():
         c = [a["C"] for a in by_month[m] if a["C"] is not None and a["C"] >= 0]
         print(f"| {m} | {len(c)} | " + " | ".join(share(c, lambda x, n=n: x > n) for n in (3, 7, 14)) + " |")
 
+    by_release = defaultdict(list)
+    for a in repo:
+        if a["C"] is not None and a["C"] >= 0 and a["release"][:7] >= meta["since"][:7]:
+            by_release[a["release"][:7]].append(a)
+    print("\n## Maintainer and review steps, by release month\n\nRepository advisories only. Medians. "
+          "Grouping by review month overstates the wait while a backlog is being cleared; grouping by release "
+          "month understates it for recent months, which only count advisories already reviewed.\n\n"
+          "| release month | fixes | release to disclosure | release to review | over 3 days | over 7 days | over 14 days |\n"
+          "|---|---|---|---|---|---|---|")
+    for m in sorted(by_release):
+        g = by_release[m]
+        c = [a["C"] for a in g]
+        print(f"| {m} | {len(g)} | {med(a['A'] for a in g)} | {med(c)} | "
+              + " | ".join(share(c, lambda x, n=n: x > n) for n in (3, 7, 14)) + " |")
+
     print("\n## CVE publication against review, by review month\n\nRepository advisories with a CVE. "
           "A positive lead means the CVE was public before the review.\n\n"
           "| review month | n | CVE first | median CVE lead | median release to CVE |\n|---|---|---|---|---|")

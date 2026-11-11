@@ -117,6 +117,29 @@ Share of repository advisories whose fixed release was out more than N days befo
 | 2026-10 | 1085 | 94% | 81% | 65% |
 | 2026-11 | 157 | 83% | 74% | 68% |
 
+## Maintainer and review steps, by release month
+
+Repository advisories only. Medians. Grouping by review month overstates the wait while a backlog is being cleared; grouping by release month understates it for recent months, which only count advisories already reviewed.
+
+| release month | fixes | release to disclosure | release to review | over 3 days | over 7 days | over 14 days |
+|---|---|---|---|---|---|---|
+| 2025-08 | 103 | 0.9 | 2.8 | 50% | 46% | 36% |
+| 2025-09 | 133 | 1.1 | 2.0 | 41% | 29% | 24% |
+| 2025-10 | 159 | 0.5 | 1.3 | 36% | 26% | 18% |
+| 2025-11 | 187 | 0.9 | 2.3 | 45% | 35% | 25% |
+| 2025-12 | 228 | 0.8 | 2.7 | 47% | 40% | 35% |
+| 2026-01 | 368 | 0.9 | 2.1 | 41% | 31% | 26% |
+| 2026-02 | 705 | 0.2 | 4.7 | 60% | 42% | 23% |
+| 2026-03 | 1158 | 0.1 | 2.2 | 37% | 22% | 16% |
+| 2026-04 | 1163 | 0.3 | 6.6 | 64% | 47% | 23% |
+| 2026-05 | 1349 | 0.3 | 18.8 | 91% | 70% | 56% |
+| 2026-06 | 1460 | 0.2 | 37.4 | 87% | 78% | 70% |
+| 2026-07 | 903 | 0.1 | 42.4 | 90% | 84% | 70% |
+| 2026-08 | 489 | 0.0 | 35.3 | 92% | 86% | 80% |
+| 2026-09 | 464 | 0.1 | 20.0 | 99% | 95% | 70% |
+| 2026-10 | 387 | 0.1 | 6.5 | 82% | 46% | 20% |
+| 2026-11 | 45 | 0.2 | 0.5 | 42% | 9% | 0% |
+
 ## CVE publication against review, by review month
 
 Repository advisories with a CVE. A positive lead means the CVE was public before the review.
