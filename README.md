@@ -16,13 +16,16 @@ For each advisory reviewed in a date window it records four public timestamps:
 ## Usage
 
     python3 collect.py --since 2025-08-22
-    python3 analyze.py > report.md
+    python3 analyze.py > data/report.md
+    python3 curl_cna.py > data/curl-cna.md
 
 Python 3.11 or later, standard library only. `collect.py` reads a GitHub token
 from `GITHUB_TOKEN`, or from `gh auth token` if that is unset. The token needs
 no permissions, because everything read here is public. Each stage caches under
 `data/cache/`, so an interrupted run resumes where it stopped. Before a long
 wait for GitHub quota it writes the partial dataset and `data/midrun-report.md`.
+
+Working notes, prior work and open questions are in `docs/NOTES.md`.
 
 ## Method
 
