@@ -3,7 +3,7 @@
 
 Two lines by the month the fix was released, for repository advisories:
 median days from release to the maintainer publishing the advisory, and
-to GitHub's review. The last two months are dotted because advisories
+to GitHub's review. The last two months are dotted and shaded because advisories
 not yet reviewed are missing from them. Standard library only; convert to
 PNG with `rsvg-convert -w 2400 docs/head-start.svg -o docs/head-start.png`.
 """
@@ -18,6 +18,7 @@ ROOT = Path(__file__).parent
 W, H, LEFT, RIGHT, TOP, BOTTOM = 1200, 675, 80, 260, 170, 100
 BLUE, ORANGE = "#2a78d6", "#eb6834"
 INK, SECONDARY, MUTED, GRID, SURFACE = "#0b0b0b", "#52514e", "#8a8983", "#e6e5e0", "#fcfcfb"
+BAND = "#f0efec"
 FONT = 'font-family="Inter, Helvetica Neue, Helvetica, Arial, sans-serif"'
 MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 INCOMPLETE = 2  # trailing months drawn dotted
@@ -61,9 +62,15 @@ def main():
     last_label = f"{MONTHS[int(data[-1][0][5:]) - 1]} {data[-1][0][:4]}"
     out = [f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}">',
            f'<rect width="{W}" height="{H}" fill="{SURFACE}"/>',
-           text(LEFT, 62, "The fix ships weeks before the alert can fire", 34, INK, 700),
+           text(LEFT, 62, "The fix ships weeks before your scanner knows", 34, INK, 700),
            text(LEFT, 98, "Median days after a fixed version is released, by the month of that release.", 19),
            text(LEFT, 123, f"GitHub repository advisories, fixes released {first_label} to {last_label}.", 19)]
+    band_x = x(len(data) - 1 - INCOMPLETE)
+    out.append(f'<rect x="{band_x:.1f}" y="{TOP:.1f}" width="{LEFT + plot_w - band_x:.1f}" height="{plot_h:.1f}" fill="{BAND}"/>')
+    out.append(f'<line x1="{band_x:.1f}" x2="{band_x:.1f}" y1="{TOP:.1f}" y2="{TOP + plot_h:.1f}" stroke="{MUTED}" stroke-width="1" stroke-dasharray="3 4"/>')
+    out.append(text((band_x + LEFT + plot_w) / 2, TOP + 24, "Incomplete", 16, INK, 600, "middle"))
+    out.append(text((band_x + LEFT + plot_w) / 2, TOP + 44, "still being", 14, SECONDARY, 400, "middle"))
+    out.append(text((band_x + LEFT + plot_w) / 2, TOP + 62, "reviewed", 14, SECONDARY, 400, "middle"))
     for tick in range(0, y_max + 1, 10):
         out.append(f'<line x1="{LEFT}" x2="{LEFT + plot_w}" y1="{y(tick):.1f}" y2="{y(tick):.1f}" '
                    f'stroke="{GRID if tick else MUTED}" stroke-width="1"/>')
@@ -74,9 +81,8 @@ def main():
             if i == 0 or month[5:] in ("01", "02") and data[i - 2][0][:4] != month[:4]:
                 out.append(text(x(i), TOP + plot_h + 48, month[:4], 14, MUTED, 400, "middle"))
     pts = lambda col, a, b: [f"{x(i):.1f},{y(data[i][col]):.1f}" for i in range(a, b + 1)]
-    for a, b, opacity in ((0, cut, 0.09), (cut, last, 0.04)):
-        out.append(f'<path d="M{" L".join(pts(2, a, b))} L{" L".join(reversed(pts(1, a, b)))} Z" '
-                   f'fill="{BLUE}" fill-opacity="{opacity}"/>')
+    out.append(f'<path d="M{" L".join(pts(2, 0, cut))} L{" L".join(reversed(pts(1, 0, cut)))} Z" '
+               f'fill="{BLUE}" fill-opacity="0.09"/>')
     for col, colour in ((2, BLUE), (1, ORANGE)):
         out.append(f'<path d="M{" L".join(pts(col, 0, cut))}" fill="none" stroke="{colour}" stroke-width="3.5" '
                    'stroke-linejoin="round" stroke-linecap="round"/>')
@@ -86,20 +92,19 @@ def main():
                    f'stroke="{SURFACE}" stroke-width="2"/>')
     label_x, review_top, low = x(last) + 18, y(y_max * 0.54), y(data[last][1])
     out.append(f'<line x1="{x(last) + 4:.1f}" y1="{y(data[last][2]) - 8:.1f}" x2="{label_x + 6:.1f}" '
-               f'y2="{review_top + 76:.1f}" stroke="{MUTED}" stroke-width="1"/>')
-    out += [text(label_x, review_top, "Reviewed by GitHub", 18, INK, 600), text(label_x, review_top + 22, "Alerts become possible."),
-            text(label_x, review_top + 44, "Dotted: recent months,"), text(label_x, review_top + 66, "still being reviewed."),
+               f'y2="{review_top + 32:.1f}" stroke="{MUTED}" stroke-width="1"/>')
+    out += [text(label_x, review_top, "Reviewed by GitHub", 18, INK, 600), text(label_x, review_top + 22, "Scanners can report it."),
             text(label_x, low - 52, "Advisory published", 18, INK, 600), text(label_x, low - 30, "by the maintainer."),
             text(label_x, low - 8, "About a day or less.")]
     peak = max(range(len(data)), key=lambda i: data[i][2])
     peak_month = ["January", "February", "March", "April", "May", "June", "July", "August", "September",
                   "October", "November", "December"][int(data[peak][0][5:]) - 1]
     out.append(f'<circle cx="{x(peak):.1f}" cy="{y(data[peak][2]):.1f}" r="6" fill="{BLUE}" stroke="{SURFACE}" stroke-width="2"/>')
-    out.append(text(x(peak), y(data[peak][2]) - 16, f"{data[peak][2]:.0f} days for fixes released in {peak_month}", 18, INK, 600, "middle"))
+    out.append(text(x(peak) + 12, y(data[peak][2]) - 16, f"{data[peak][2]:.0f} days for fixes released in {peak_month}", 18, INK, 600, "end"))
     out.append(text(x(peak - 0.4), y(data[peak][2] / 3), "The head start", 18, INK, 600, "middle"))
     out.append(text(x(peak - 0.4), y(data[peak][2] / 3) + 22, "fix available, no alert yet", 16, SECONDARY, 400, "middle"))
-    out.append(text(LEFT, H - 20, f"Source: GitHub Advisory Database reviews through {meta['until']}. Recent months exclude "
-                    "advisories not yet reviewed. github.com/tmatens/advisory-review-lag", 13, MUTED))
+    out.append(text(LEFT, H - 20, f"Source: GitHub Advisory Database reviews through {meta['until']}. The shaded months only count advisories "
+                    "already reviewed, so their real wait is longer. github.com/tmatens/advisory-review-lag", 13, MUTED))
     out.append("</svg>")
     (ROOT / "docs" / "head-start.svg").write_text("\n".join(out) + "\n")
 
