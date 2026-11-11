@@ -4,6 +4,30 @@ Measures how long a security fix in an open source package takes to reach the
 GitHub Advisory Database, which is the source for Dependabot alerts and for
 language-package findings in scanners that read the reviewed advisory set.
 
+## Findings
+
+![Median days from a fixed release to the maintainer's advisory and to GitHub's review, by release month](docs/head-start.png)
+
+From the snapshot of 14,173 advisories reviewed between 2025-08-22 and
+2026-11-11 (full tables in `data/report.md`):
+
+- Maintainers published the advisory within about a day of releasing the fix,
+  at the median, throughout the period.
+- The wait from release to GitHub's review went from 1 to 5 days (fixes
+  released through March 2026) to 37 to 42 days (fixes released June and July
+  2026).
+- With a seven-day hold-back before updating, the fix was still in place before
+  the review for 70% to 86% of fixes released May to August 2026.
+- Severity made no measurable difference to the wait. The CVE record was not
+  an earlier signal for most advisories.
+- At least 842 advisories in reviewed ecosystems had a CVE and no review at
+  collection time (`data/unreviewed.md`).
+
+Recent months undercount, because advisories not yet reviewed are missing.
+See Limits.
+
+## What it records
+
 For each advisory reviewed in a date window it records four public timestamps:
 
 | Timestamp | Meaning | Source |
@@ -17,6 +41,7 @@ For each advisory reviewed in a date window it records four public timestamps:
 
     python3 collect.py --since 2025-08-22
     python3 analyze.py > data/report.md
+    python3 chart.py
     python3 curl_cna.py > data/curl-cna.md
     python3 kev_check.py > data/kev.md
     python3 unreviewed.py > data/unreviewed.md
