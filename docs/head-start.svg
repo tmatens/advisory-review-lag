@@ -45,6 +45,6 @@
 <circle cx="755.7" cy="232.0" r="6" fill="#2a78d6" stroke="#fcfcfb" stroke-width="2"/>
 <text x="767.7" y="216.0" font-family="Inter, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="18" font-weight="600" fill="#0b0b0b" text-anchor="end">42 days for fixes released in July</text>
 <text x="731.1" y="460.7" font-family="Inter, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="18" font-weight="600" fill="#0b0b0b" text-anchor="middle">The head start</text>
-<text x="731.1" y="482.7" font-family="Inter, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="16" font-weight="400" fill="#52514e" text-anchor="middle">fix available, no alert yet</text>
+<text x="731.1" y="482.7" font-family="Inter, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="16" font-weight="400" fill="#52514e" text-anchor="middle">fix available, no finding yet</text>
 <text x="80.0" y="655.0" font-family="Inter, Helvetica Neue, Helvetica, Arial, sans-serif" font-size="13" font-weight="400" fill="#8a8983" text-anchor="start">Source: GitHub Advisory Database reviews through 2026-11-11. The shaded months only count advisories reviewed so far. github.com/tmatens/advisory-review-lag</text>
 </svg>

@@ -101,7 +101,7 @@ def main():
     out.append(f'<circle cx="{x(peak):.1f}" cy="{y(data[peak][2]):.1f}" r="6" fill="{BLUE}" stroke="{SURFACE}" stroke-width="2"/>')
     out.append(text(x(peak) + 12, y(data[peak][2]) - 16, f"{data[peak][2]:.0f} days for fixes released in {peak_month}", 18, INK, 600, "end"))
     out.append(text(x(peak - 0.4), y(data[peak][2] / 3), "The head start", 18, INK, 600, "middle"))
-    out.append(text(x(peak - 0.4), y(data[peak][2] / 3) + 22, "fix available, no alert yet", 16, SECONDARY, 400, "middle"))
+    out.append(text(x(peak - 0.4), y(data[peak][2] / 3) + 22, "fix available, no finding yet", 16, SECONDARY, 400, "middle"))
     out.append(text(LEFT, H - 20, f"Source: GitHub Advisory Database reviews through {meta['until']}. The shaded months only count advisories "
                     "reviewed so far. github.com/tmatens/advisory-review-lag", 13, MUTED))
     out.append("</svg>")
