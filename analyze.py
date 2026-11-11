@@ -64,10 +64,15 @@ def main():
     n = len(advs)
     print(f"# Advisory review lag\n\nAdvisories reviewed {meta['since']} to {meta['until']}, "
           f"collected {meta['collected_at']}. All figures in days.\n")
+    if meta.get("partial"):
+        print(f"**Partial, mid-run.** Disclosure dates fetched for {meta['repo_advisories_fetched']} of "
+              f"{meta['repo_advisories_total']} repository advisories, oldest modification month first, "
+              "so later months are under-represented.\n")
     print("## Coverage\n\n| | count | share |\n|---|---|---|")
     for label, k in (
         ("Reviewed advisories", n),
-        ("With a repository advisory (disclosure date known)", sum(a["has_repo_advisory"] and bool(a["repo_published"]) for a in advs)),
+        ("With a repository advisory", sum(a["has_repo_advisory"] for a in advs)),
+        ("With a disclosure date", sum(bool(a["repo_published"]) for a in advs)),
         ("With a patched version", sum(any(p["patched"] for p in a["packages"]) for a in advs)),
         ("With a release date", sum(bool(a["release"]) for a in advs)),
         ("With a CVE publish date", sum(bool(a["cve_published"]) for a in advs)),

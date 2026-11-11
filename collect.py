@@ -51,6 +51,53 @@ def github_token():
 
 
 TOKEN = None
+# Set by main() so a long quota wait can write a partial dataset first.
+RUN = {}
+
+
+def write_outputs(advisories, since, until, partial):
+    """Write data/advisories.jsonl from whatever the caches hold so far."""
+    repo_pub = load_cache("repo_published")
+    releases = load_cache("release")
+    cves = load_cache("cve_published")
+    DATA.mkdir(exist_ok=True)
+    tmp = DATA / "advisories.jsonl.tmp"
+    with open(tmp, "w") as fh:
+        for adv in sorted(advisories, key=lambda a: (a["reviewed"], a["ghsa"])):
+            row = {k: v for k, v in adv.items() if k not in ("repo_advisory_url", "packages")}
+            row["has_repo_advisory"] = bool(adv["repo_advisory_url"])
+            row["repo_published"] = repo_pub.get(adv["ghsa"])
+            row["cve_published"] = cves.get(adv["cve"]) if adv["cve"] else None
+            row["packages"] = []
+            for pkg in adv["packages"]:
+                rel = releases.get(f'{pkg["eco"]}|{pkg["name"]}|{pkg["patched"]}') or {}
+                row["packages"].append({**pkg, "release": rel.get("time"), "release_src": rel.get("src")})
+            fh.write(json.dumps(row) + "\n")
+    tmp.replace(DATA / "advisories.jsonl")
+    with_repo = [a for a in advisories if a["repo_advisory_url"]]
+    meta = {"since": since.isoformat(), "until": until.isoformat(),
+            "collected_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+            "advisories": len(advisories), "partial": partial,
+            "repo_advisories_fetched": sum(a["ghsa"] in repo_pub for a in with_repo),
+            "repo_advisories_total": len(with_repo)}
+    (DATA / "collection.json").write_text(json.dumps(meta, indent=2) + "\n")
+    return meta
+
+
+def midrun_summary():
+    """Write a partial dataset and report. Called before a long quota wait."""
+    if not RUN.get("advisories"):
+        return
+    try:
+        meta = write_outputs(RUN["advisories"], RUN["since"], RUN["until"], partial=True)
+        report = subprocess.run([sys.executable, str(Path(__file__).parent / "analyze.py")],
+                                capture_output=True, text=True).stdout
+        (DATA / "midrun-report.md").write_text(report)
+        print("  mid-run summary written: %d of %d repository advisories fetched"
+              % (meta["repo_advisories_fetched"], meta["repo_advisories_total"]),
+              file=sys.stderr, flush=True)
+    except Exception as err:  # a summary must never stop the collection
+        print(f"  mid-run summary failed: {err}", file=sys.stderr, flush=True)
 
 
 def http_json(url, headers=None, retries=4):
@@ -68,7 +115,9 @@ def http_json(url, headers=None, retries=4):
                 reset = err.headers.get("X-RateLimit-Reset")
                 retry = err.headers.get("Retry-After")
                 wait = int(retry) if retry else max(5, int(reset) - int(time.time()) + 5) if reset else 60
-                print(f"  rate limited, sleeping {min(wait, 3700)}s", file=sys.stderr)
+                print(f"  rate limited, sleeping {min(wait, 3700)}s", file=sys.stderr, flush=True)
+                if wait > 120:
+                    midrun_summary()
                 time.sleep(min(wait, 3700))
                 continue
             if err.code >= 500:
@@ -90,7 +139,8 @@ def gh_get(url):
         reset = headers.get("X-RateLimit-Reset")
         if remaining is not None and reset and int(remaining) < RESERVE:
             wait = max(5, int(reset) - int(time.time()) + 5)
-            print(f"  GitHub quota at reserve, sleeping {wait}s", file=sys.stderr)
+            print(f"  GitHub quota at reserve, sleeping {wait}s", file=sys.stderr, flush=True)
+            midrun_summary()
             time.sleep(wait)
     return body, headers
 
@@ -180,7 +230,7 @@ def fetch_repo_published(advisories):
         cache[adv["ghsa"]] = value
         append_cache("repo_published", adv["ghsa"], value)
         if i % 500 == 0:
-            print(f"  {i}/{len(todo)}", file=sys.stderr)
+            print(f"  {i}/{len(todo)}", file=sys.stderr, flush=True)
     return cache
 
 
@@ -248,27 +298,13 @@ def main():
         print("warning: no GitHub token, limited to 60 requests an hour", file=sys.stderr)
 
     advisories = list_reviewed(args.since, args.until)
-    print(f"reviewed in window: {len(advisories)}", file=sys.stderr)
-    repo_pub = fetch_repo_published(advisories)
-    releases = fetch_releases(advisories)
-    cves = fetch_cve_published(advisories)
-
-    DATA.mkdir(exist_ok=True)
-    with open(DATA / "advisories.jsonl", "w") as fh:
-        for adv in sorted(advisories, key=lambda a: (a["reviewed"], a["ghsa"])):
-            row = {k: v for k, v in adv.items() if k != "repo_advisory_url"}
-            row["has_repo_advisory"] = bool(adv["repo_advisory_url"])
-            row["repo_published"] = repo_pub.get(adv["ghsa"])
-            row["cve_published"] = cves.get(adv["cve"]) if adv["cve"] else None
-            for pkg in row["packages"]:
-                rel = releases.get(f'{pkg["eco"]}|{pkg["name"]}|{pkg["patched"]}') or {}
-                pkg["release"] = rel.get("time")
-                pkg["release_src"] = rel.get("src")
-            fh.write(json.dumps(row) + "\n")
-    meta = {"since": args.since.isoformat(), "until": args.until.isoformat(),
-            "collected_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-            "advisories": len(advisories)}
-    (DATA / "collection.json").write_text(json.dumps(meta, indent=2) + "\n")
+    print(f"reviewed in window: {len(advisories)}", file=sys.stderr, flush=True)
+    RUN.update(advisories=advisories, since=args.since, until=args.until)
+    # Unauthenticated sources first, so a GitHub quota wait already has them.
+    fetch_releases(advisories)
+    fetch_cve_published(advisories)
+    fetch_repo_published(advisories)
+    write_outputs(advisories, args.since, args.until, partial=False)
     print(f"wrote {len(advisories)} advisories to {DATA / 'advisories.jsonl'}", file=sys.stderr)
 
 

@@ -21,7 +21,8 @@ For each advisory reviewed in a date window it records four public timestamps:
 Python 3.11 or later, standard library only. `collect.py` reads a GitHub token
 from `GITHUB_TOKEN`, or from `gh auth token` if that is unset. The token needs
 no permissions, because everything read here is public. Each stage caches under
-`data/cache/`, so an interrupted run resumes where it stopped.
+`data/cache/`, so an interrupted run resumes where it stopped. Before a long
+wait for GitHub quota it writes the partial dataset and `data/midrun-report.md`.
 
 ## Method
 
