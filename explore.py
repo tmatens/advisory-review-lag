@@ -169,6 +169,41 @@ def main():
         now = [r[2] for r in released if r[0][:7] == m]
         print(f"| {m} | " + " | ".join(cells) + f" | {len(now)} | {statistics.median(now):.1f} |")
 
+    summer = []
+    for a in repo:
+        rels = sorted((p["release"] for p in a["packages"] if p.get("release")), key=parse)
+        if rels and "2026-05" <= rels[0][:7] <= "2026-08":
+            summer.append((a, rels[0], rels[-1]))
+    seen = [(a, lo, hi) for a, lo, hi in summer if days(lo, a["reviewed"]) >= 0]
+    with_cve = [(a, lo) for a, lo, _ in summer if a["cve_published"]]
+    med = lambda xs: f"{statistics.median(xs):.1f}"
+    print("\n## Fixes released May to August 2026, pooled\n\nRepository advisories with a release date. "
+          "The write-up's \"about four weeks\" and its CVE comparison come from this table. Review figures leave out "
+          "advisories whose release is dated after the review. The CVE rows use every advisory with a published "
+          "CVE record, including those where the CVE came before the release.\n\n| measure | advisories | median days |\n|---|---|---|")
+    print(f"| release to review | {len(seen)} | {med([days(lo, a['reviewed']) for a, lo, _ in seen])} |")
+    print(f"| advisory to review | {len(seen)} | {med([a['B'] for a, _, _ in seen])} |")
+    print(f"| release to CVE record | {len(with_cve)} | {med([days(lo, a['cve_published']) for a, lo in with_cve])} |")
+    print(f"| release to review, same advisories as the CVE row | {len(with_cve)} | "
+          f"{med([days(lo, a['reviewed']) for a, lo in with_cve])} |")
+
+    multi = []
+    for a in repo:
+        rels = sorted((p["release"] for p in a["packages"] if p.get("release")), key=parse)
+        if rels and rels[0] != rels[-1] and days(rels[0], a["reviewed"]) >= 0:
+            multi.append((a, rels[0], rels[-1]))
+    spread = [days(lo, hi) for _, lo, hi in multi]
+    late = [days(hi, a["reviewed"]) for a, _, hi in seen]
+    print("\n## Earliest or latest fixed version\n\nAn advisory can list several fixed versions. Every figure counts "
+          "from the earliest. This is what changes if the latest is used instead, for fixes released May to August "
+          "2026. Advisories whose latest fixed version is dated after the review stay in, as a wait below zero.\n")
+    print(f"Across the whole dataset, {len(multi)} repository advisories list fixed versions with different publish "
+          f"times; {sum(s < 1 for s in spread)} of those are within a day of each other and "
+          f"{sum(s > 7 for s in spread)} are more than a week apart.\n\n"
+          "| counted from | median days to review | over 3 days | over 7 days | over 14 days |\n|---|---|---|---|---|")
+    for label, xs in (("earliest", [days(lo, a["reviewed"]) for a, lo, _ in seen]), ("latest", late)):
+        print(f"| {label} | {med(xs)} | " + " | ".join(f"{100 * sum(x > n for x in xs) / len(xs):.0f}%" for n in (3, 7, 14)) + " |")
+
     print("\n## Review activity by weekday\n\nAll reviewed advisories.\n\n| weekday | reviews |\n|---|---|")
     wd = Counter(parse(a["reviewed"]).strftime("%A") for a in advs)
     for d in ("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"):
