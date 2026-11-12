@@ -68,7 +68,7 @@ The pushback I'd expect is that taking new releases right away is how you end up
 
 Those are the well-known cases, though. A malicious package nobody is watching can sit for much longer. Testing helps with what gets past the wait, and scanning and vetting the artifacts themselves matters too, but that's a topic for a different article.
 
-A lot of teams hold new versions back for a few days for these reasons, and I do the same. How many days to wait is a decision. It should be a deliberate one, automated in most cases, and it shouldn't wait for a vulnerability to be reported. So I checked how much of the head start is left for a few choices. The table shows the share of advisories where the fix had already been out longer than the hold-back by the time GitHub reviewed it.
+A lot of teams hold new versions back for a few days for these reasons, and I do the same. How many days to wait is a decision. It should be a deliberate one, automated in most cases, and it shouldn't wait for a vulnerability to be reported. So I checked how much of that time is left for a few choices. The table shows the share of advisories where the fix had already been out longer than the hold-back by the time GitHub reviewed it.
 
 | Fix released in | 3 days | 7 days | 14 days |
 |---|---|---|---|
