@@ -1,0 +1,9 @@
+title: The fix ships weeks before your scanner knows
+description: What 14,173 GitHub-reviewed advisories say about how long a fix waits to be noticed
+author: Todd Matens
+url: https://tmatens.github.io
+baseurl: /advisory-review-lag
+lang: en-US
+theme: jekyll-theme-primer
+plugins:
+  - jekyll-seo-tag
