@@ -27,7 +27,7 @@ I used GitHub's public API to collect every advisory reviewed into the Advisory 
 
 ## What I found
 
-These are median days from the fixed version being released to GitHub's review, grouped by the month of the release. It's too early to read September and October, because advisories that haven't been reviewed yet aren't counted.
+These are median days from the fixed version being released to GitHub's review, for the maintainer-published advisories, grouped by the month of the release. It's too early to read September and October, because advisories that haven't been reviewed yet aren't counted.
 
 | Fix released in | Median days to GitHub's review |
 |---|---|
@@ -52,7 +52,7 @@ Severity is also becoming a weaker guide to what can be exploited. The UK's Nati
 
 Two things you might expect to get you the fix sooner don't.
 
-One is watching for the CVE. For fixes released this summer, the CVE was published a median of 33 days after the fix, which is no sooner than GitHub's review. A CVE also doesn't make a scanner see the fix on its own. One of my advisories had a published CVE that GitHub hadn't reviewed yet, and when I scanned an affected version with Trivy, it didn't report it.
+One is watching for the CVE. For fixes released this summer, the CVE was published a median of 33 days after the fix, which is no sooner than GitHub's review. A CVE also doesn't make a scanner see the fix on its own. One of my advisories had a published CVE that GitHub hadn't reviewed yet. When I scanned a project that depends on an affected version with Trivy, Grype and OSV-Scanner, none of them reported it.
 
 The other is counting on severity. A critical waited about as long as a low, close to three weeks at the median, and 41% of the criticals waited more than a month. GitHub says they prioritize by impact and severity, and that may decide which advisories get reviewed at all. I can only see the ones that were.
 
@@ -100,6 +100,7 @@ I asked Daniel Stenberg, who maintains curl, if this is different for a project 
 - Updating on release assumes the fix is in a version you can move to. If it only lands in a new major version, or it's several levels down in your dependency tree, it takes more than a version bump.
 - Where an advisory lists more than one fixed version, I counted from the earliest. Most were published within a day of each other, and counting from the latest changes the summer median by less than a day.
 - This only covers the package ecosystems GitHub reviews. It doesn't say anything about operating system packages.
+- I measured GitHub's database and tested three open source scanners. Commercial scanners that do their own research may report a fix sooner, and I didn't measure them.
 
 None of this needs a new tool. The fixed version was there the whole time, and both of the common update bots will propose it without waiting for an advisory. How a program makes use of that is its own call. For my part, the next time I ship a fix, I won't expect anyone's scanner to notice for a while, and I'd rather their update bot got there first.
 

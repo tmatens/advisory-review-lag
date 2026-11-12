@@ -49,12 +49,34 @@ is still open. Figures are from the 2026-11-11 snapshot unless stated.
 
 ## Scanner check
 
-Trivy 0.76.2, database built 2026-11-11 13:00 UTC, scanning a requirements file
-that pins `compose-lint==0.31.0`. Six advisories list that version of the
-Python package as affected. Trivy reported the five that GitHub had reviewed
-and did not report the sixth, GHSA-m4xg-839g-24cv, which had a published CVE
-(CVE-2026-125124) but no review. Only Trivy was tested. Other vendors run
-their own pipelines and may differ in either direction.
+One published repository advisory for the PyPI package compose-lint
+(GHSA-m4xg-839g-24cv, CVE-2026-125124, affecting version 0.31.0) had a CVE
+record from 2026-11-10 and no GitHub review when this was run on 2026-11-12.
+Five other advisories for the same version had been reviewed. Three scanners
+were run against a requirements file pinning `compose-lint==0.31.0`.
+
+| Scanner | Mode | Reported |
+|---|---|---|
+| Trivy 0.76.2 | default | the five reviewed |
+| Trivy 0.76.2 | `--detection-priority comprehensive` | the five reviewed |
+| Grype 0.121.3, database built 2026-11-11 | default | the five reviewed |
+| Grype 0.121.3 | `GRYPE_MATCH_PYTHON_USING_CPES=true` | the five reviewed |
+| Grype 0.121.3 | installed package in a virtual environment | the five reviewed |
+| OSV-Scanner 2.7.1 | `scan source --lockfile` | the five reviewed |
+| OSV-Scanner 2.7.1 | `scan source --include-git-root` on a checkout of the project at the affected tag | the five reviewed and the unreviewed one |
+
+Why the last row differs: OSV imports the CVE record itself, and that record
+names the affected code by git commit range, with no package ecosystem. A
+query by PyPI name and version does not return it; a query by commit does.
+That path applies to code carried as source (a submodule, vendored code, a
+build from a checkout), not to a dependency on a published package version.
+
+Why the CPE modes did not help: NVD listed the CVE as received with no
+configurations, so there was no product data to match.
+
+This is one advisory on one package. It shows how these tools behave, not how
+often. Commercial scanners were not tested, and neither was a scan from an
+SBOM produced by another tool.
 
 ## Findings
 
