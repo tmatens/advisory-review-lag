@@ -4,6 +4,9 @@ Measures how long a security fix in an open source package takes to reach the
 GitHub Advisory Database, which is the source for Dependabot alerts and for
 language-package findings in scanners that read the reviewed advisory set.
 
+The write-up is [The fix ships weeks before your scanner knows](https://tmatens.github.io/advisory-review-lag/),
+also [on dev.to](https://dev.to/tmatens/the-fix-ships-weeks-before-your-scanner-knows-2g35).
+
 ## Findings
 
 ![Median days from a fixed release to the maintainer's advisory and to GitHub's review, by release month](docs/head-start.png)
