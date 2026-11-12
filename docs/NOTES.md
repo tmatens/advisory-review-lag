@@ -210,7 +210,9 @@ median was 40 days for CVEs assigned by GitHub's CNA and 5 days for all other
 assigners together. It varies widely by assigner: under a day for VMware,
 OpenJS and Microsoft, 7 days for Apache, 19 for VulnCheck, 31 for Gitea. For
 fixes released August 2025 to March 2026 the GitHub figure was 3 days, lower
-than most other assigners. Negative waits (the CVE record came before the
+than most other assigners. Gitea's CNA covers Gitea only; 46 of its 49 CVE
+records in the dataset were published on two days (35 on 2026-07-03 and 11 on
+2026-08-13), so its median reflects batch publication. Negative waits (the CVE record came before the
 release) are kept. The table mixes projects that run their own CNA with
 vendors and third-party CNAs, and it does not adjust for the kind of software
 each one covers.

@@ -93,7 +93,7 @@ I'm not recommending one of these over the others. The first is the one I've don
 
 ## What it looks like for maintainers
 
-I asked Daniel Stenberg, who maintains curl, if this is different for a project that is its own CVE Numbering Authority (CNA) and issues its own CVEs. He told me in a public exchange on LinkedIn: "we are a CNA, we get them the same second we ask for them: zero friction". The data backs that up. CVEs from projects that run their own CNA were published within a day or two of the fix this summer, and the ones GitHub assigned took a median of 41 days. I'm considering going through the CNA process myself, more as an academic exercise than because compose-lint needs it.
+I asked Daniel Stenberg, who maintains curl, if this is different for a project that is its own CVE Numbering Authority (CNA) and issues its own CVEs. He told me in a public exchange on LinkedIn: "we are a CNA, we get them the same second we ask for them: zero friction". The data partly backs that up. A project that is its own CNA controls when its CVEs are published, and some were much faster for it. VMware, OpenJS and Microsoft published theirs within a day of the fix this summer. Others weren't faster. Gitea published its records in batches, a median of 31 days after the fixes. The ones GitHub assigned took a median of 40 days. I'm considering going through the CNA process myself, more as an academic exercise than because compose-lint needs it.
 
 ## What this doesn't tell you
 
