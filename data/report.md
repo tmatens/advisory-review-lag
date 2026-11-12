@@ -1,6 +1,6 @@
 # Advisory review lag
 
-Advisories reviewed 2025-08-22 to 2026-11-11, collected 2026-11-11T16:09:09+00:00. All figures in days.
+Advisories reviewed 2025-08-22 to 2026-11-11, collected 2026-11-12T01:55:18+00:00. All figures in days.
 
 ## Coverage
 
@@ -11,7 +11,7 @@ Advisories reviewed 2025-08-22 to 2026-11-11, collected 2026-11-11T16:09:09+00:0
 | With a disclosure date | 10866 | 77% |
 | With a patched version | 12581 | 89% |
 | With a release date | 11526 | 81% |
-| With a CVE publish date | 11962 | 84% |
+| With a CVE publish date | 11963 | 84% |
 | Covering more than one package | 3847 | 27% |
 | Disclosed before the release (A < 0) | 1030 | 7% |
 
@@ -22,7 +22,7 @@ Advisories reviewed 2025-08-22 to 2026-11-11, collected 2026-11-11T16:09:09+00:0
 | A release to disclosure | 9531 | 0.2 | 0.0 | 5.8 | 30.0 |
 | B disclosure to review | 10866 | 4.1 | 1.0 | 21.0 | 50.6 |
 | C release to review | 11526 | 14.0 | 2.9 | 42.9 | 86.2 |
-| D disclosure to CVE | 9440 | 8.8 | 1.1 | 24.8 | 67.5 |
+| D disclosure to CVE | 9441 | 8.8 | 1.1 | 24.8 | 67.5 |
 
 ## Disclosure to review, by review month
 
@@ -160,7 +160,7 @@ Repository advisories with a CVE. A positive lead means the CVE was public befor
 | 2026-07 | 991 | 47% | -1.1 | 42.2 |
 | 2026-08 | 571 | 80% | 0.0 | 43.7 |
 | 2026-09 | 796 | 90% | 1.1 | 38.1 |
-| 2026-10 | 1045 | 92% | 1.0 | 19.9 |
+| 2026-10 | 1046 | 92% | 1.0 | 19.9 |
 | 2026-11 | 151 | 100% | 0.9 | 42.1 |
 
 ## Disclosure to review by severity, reviewed from May 2026
