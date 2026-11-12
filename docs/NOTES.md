@@ -133,6 +133,14 @@ reviewed 2026-09-08) and CVE-2026-102895 (GPUStack, published 2026-07-31,
 listed and reviewed 2026-11-09). Fixed versions were released 2026-07-27 and
 2026-06-18.
 
+The release dates in the dataset are package registry dates, and both of these
+are usually run from a release binary or a container image, so those were
+checked by hand on 2026-11-12. Gitea 1.27.1: GitHub release with binaries
+2026-07-27 20:20 UTC, `gitea/gitea:1.27.1` pushed to Docker Hub 21:05 UTC the
+same day. GPUStack 2.2.0: GitHub release 2026-06-18 15:54 UTC,
+`gpustack/gpustack:v2.2.0` pushed 15:27 UTC the same day. In both cases the
+form people run was available before the advisory was published.
+
 ## Unreviewed advisories
 
 `unreviewed.py` (output `data/unreviewed.md`, list `data/unreviewed.jsonl`)
@@ -193,13 +201,31 @@ curl's handling has changed several times, per Daniel Stenberg's blog
 curl is a C project and is not in the ecosystems the Advisory Database
 reviews, so it has no review step to measure.
 
+## CVE record by assigning CNA
+
+`assigner.py` looks up the assigning CNA of every CVE in the dataset and
+prints the wait from the earliest fixed release to the CVE record, per
+assigner; output in `data/cna.md`. For fixes released May to August 2026 the
+median was 40 days for CVEs assigned by GitHub's CNA and 5 days for all other
+assigners together. It varies widely by assigner: under a day for VMware,
+OpenJS and Microsoft, 7 days for Apache, 19 for VulnCheck, 31 for Gitea. For
+fixes released August 2025 to March 2026 the GitHub figure was 3 days, lower
+than most other assigners. Negative waits (the CVE record came before the
+release) are kept. The table mixes projects that run their own CNA with
+vendors and third-party CNAs, and it does not adjust for the kind of software
+each one covers.
+
+Two definitions used in the write-up, both in `docs/EXPLORATORY.md`: the
+pooled May to August figures, and what changes when the wait is counted from
+the latest fixed version an advisory lists instead of the earliest.
+
 ## Open questions
 
 - How many unreviewed advisories have no CVE yet. The lower bound above only
   counts those with one.
 - How review order is chosen in practice.
-- Whether project-assigned CVEs fare better than GitHub-assigned ones on time
-  to CVE and time to review. Needs the assigner for each CVE record.
+- Whether a CVE from another CNA is reviewed into the database any sooner.
+  `assigner.py` covers time to the CVE record only.
 - The gap between a fix being merged and released. Many advisories link the
   fix commit, so commit date to release date is measurable.
 - Whether the September and October cohorts hold up once the backlog clears.

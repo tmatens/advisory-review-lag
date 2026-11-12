@@ -23,7 +23,7 @@ What's easy to miss in the tsunami of published vulnerabilities is that there's 
 
 ## What I measured
 
-I used GitHub's public API to collect every advisory reviewed into the Advisory Database between August 22, 2025 and November 11, 2026. That came to 14,173 advisories, and 10,873 of them started as a repository advisory published by the project's maintainer. For each one I recorded when the fixed version reached its registry, when the maintainer published the advisory, when the CVE was published, and when GitHub reviewed it. Where an advisory lists more than one fixed version, I counted from the earliest. Most were published within a day of each other, and counting from the latest changes the summer median by less than a day. The start date picks up where [an earlier study of the same pipeline](https://arxiv.org/abs/2602.06009v1) leaves off, and my first six months matched its results.
+I used GitHub's public API to collect every advisory reviewed into the Advisory Database between August 22, 2025 and November 11, 2026. That came to 14,173 advisories, and 10,873 of them started as a repository advisory published by the project's maintainer. For each one I recorded when the fixed version reached its registry, when the maintainer published the advisory, when the CVE was published, and when GitHub reviewed it. Where an advisory lists more than one fixed version, I counted from the earliest. Most were published within a day of each other, and counting from the latest changes the summer median by about a day. The start date picks up where [an earlier study of the same pipeline](https://arxiv.org/abs/2602.06009v1) leaves off, and my first six months matched its results.
 
 ## What I found
 

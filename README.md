@@ -43,6 +43,7 @@ For each advisory reviewed in a date window it records four public timestamps:
     python3 analyze.py > data/report.md
     python3 chart.py
     python3 curl_cna.py > data/curl-cna.md
+    python3 assigner.py > data/cna.md
     python3 kev_check.py > data/kev.md
     python3 unreviewed.py > data/unreviewed.md
     python3 downloads.py > data/downloads.md
