@@ -100,7 +100,7 @@ I asked Daniel Stenberg, who maintains curl, if this is different for a project 
 - Updating on release assumes the fix is in a version you can move to. If it only lands in a new major version, or it's several levels down in your dependency tree, it takes more than a version bump.
 - Where an advisory lists more than one fixed version, I counted from the earliest. Most were published within a day of each other, and counting from the latest changes the summer median by less than a day.
 - This only covers the package ecosystems GitHub reviews. It doesn't say anything about operating system packages.
-- I measured GitHub's database and tested three open source scanners. Commercial scanners that do their own research may report a fix sooner, and I didn't measure them.
+- I measured GitHub's database and tested three open source scanners. Commercial scanners that do their own research may report a fix sooner, and I didn't measure them. Whichever one you use, the finding comes after the fix.
 
 None of this needs a new tool. The fixed version was there the whole time, and both of the common update bots will propose it without waiting for an advisory. How a program makes use of that is its own call. For my part, the next time I ship a fix, I won't expect anyone's scanner to notice for a while, and I'd rather their update bot got there first.
 
