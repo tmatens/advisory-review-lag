@@ -1,6 +1,6 @@
 # Unreviewed repository advisories that have a CVE
 
-CVEs published by the GitHub CNA from 2026-05-01 to 2026-11-11, compared with the reviewed snapshot collected 2026-11-11T16:09:09+00:00. A lower bound: see `unreviewed.py`.
+CVEs published by the GitHub CNA from 2026-05-01 to 2026-11-11, compared with the reviewed snapshot collected 2026-11-12T01:55:18+00:00. A lower bound: see `unreviewed.py`.
 
 | step | count |
 |---|---|
