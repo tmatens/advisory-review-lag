@@ -18,7 +18,7 @@ ROOT = Path(__file__).parent
 W, H, LEFT, RIGHT, TOP, BOTTOM = 1200, 675, 80, 260, 170, 100
 BLUE, ORANGE = "#2a78d6", "#eb6834"
 INK, SECONDARY, MUTED, GRID, SURFACE = "#0b0b0b", "#52514e", "#8a8983", "#e6e5e0", "#fcfcfb"
-BAND = "#f0efec"
+BAND = "#dcdad2"
 FONT = 'font-family="Inter, Helvetica Neue, Helvetica, Arial, sans-serif"'
 MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 INCOMPLETE = 2  # trailing months drawn dotted
@@ -65,15 +65,18 @@ def main():
            text(LEFT, 62, "The fix ships weeks before your scanner knows", 34, INK, 700),
            text(LEFT, 98, "Median days after a fixed version is released, by the month of that release.", 19),
            text(LEFT, 123, f"GitHub repository advisories, fixes released {first_label} to {last_label}.", 19)]
-    band_x = x(len(data) - 1 - INCOMPLETE)
-    out.append(f'<rect x="{band_x:.1f}" y="{TOP:.1f}" width="{LEFT + plot_w - band_x:.1f}" height="{plot_h:.1f}" fill="{BAND}"/>')
-    out.append(f'<line x1="{band_x:.1f}" x2="{band_x:.1f}" y1="{TOP:.1f}" y2="{TOP + plot_h:.1f}" stroke="{MUTED}" stroke-width="1" stroke-dasharray="3 4"/>')
-    out.append(text((band_x + LEFT + plot_w) / 2, TOP + 24, "Too early", 16, INK, 600, "middle"))
-    out.append(text((band_x + LEFT + plot_w) / 2, TOP + 44, "to tell", 16, INK, 600, "middle"))
     for tick in range(0, y_max + 1, 10):
         out.append(f'<line x1="{LEFT}" x2="{LEFT + plot_w}" y1="{y(tick):.1f}" y2="{y(tick):.1f}" '
                    f'stroke="{GRID if tick else MUTED}" stroke-width="1"/>')
         out.append(text(LEFT - 12, y(tick) + 6, f"{tick} days" if tick == y_max else str(tick), 16, MUTED, 400, "end"))
+    band_x = x(len(data) - 1 - INCOMPLETE)
+    out.append(f'<rect x="{band_x:.1f}" y="{TOP:.1f}" width="{LEFT + plot_w - band_x:.1f}" height="{plot_h:.1f}" fill="{BAND}"/>')
+    out.append(f'<line x1="{band_x:.1f}" x2="{band_x:.1f}" y1="{TOP:.1f}" y2="{TOP + plot_h:.1f}" stroke="{SECONDARY}" stroke-width="1.5" stroke-dasharray="4 4"/>')
+    out.append(f'<line x1="{band_x:.1f}" x2="{LEFT + plot_w}" y1="{y(0):.1f}" y2="{y(0):.1f}" stroke="{MUTED}" stroke-width="1"/>')
+    out.append(text((band_x + LEFT + plot_w) / 2, TOP + 24, "Too early", 16, INK, 600, "middle"))
+    out.append(text((band_x + LEFT + plot_w) / 2, TOP + 44, "to tell", 16, INK, 600, "middle"))
+    out.append(text((band_x + LEFT + plot_w) / 2, TOP + 68, "reviews still", 14, SECONDARY, 400, "middle"))
+    out.append(text((band_x + LEFT + plot_w) / 2, TOP + 86, "coming in", 14, SECONDARY, 400, "middle"))
     for i, (month, _, _) in enumerate(data):
         if i % 2 == 0:
             out.append(text(x(i), TOP + plot_h + 28, MONTHS[int(month[5:]) - 1], 16, MUTED, 400, "middle"))
@@ -93,8 +96,9 @@ def main():
     out.append(f'<line x1="{x(last) + 4:.1f}" y1="{y(data[last][2]) - 8:.1f}" x2="{label_x + 6:.1f}" '
                f'y2="{review_top + 32:.1f}" stroke="{MUTED}" stroke-width="1"/>')
     out += [text(label_x, review_top, "Reviewed by GitHub", 18, INK, 600), text(label_x, review_top + 22, "Scanners can report it."),
-            text(label_x, low - 52, "Advisory published", 18, INK, 600), text(label_x, low - 30, "by the maintainer."),
-            text(label_x, low - 8, "About a day or less.")]
+            text(label_x + 20, low - 46, "Advisory published", 18, INK, 600), text(label_x + 20, low - 24, "by the maintainer."),
+            text(label_x + 20, low - 2, "About a day or less.")]
+    out.append(f'<line x1="{x(last) + 8:.1f}" y1="{low - 2:.1f}" x2="{label_x + 15:.1f}" y2="{low - 9:.1f}" stroke="{MUTED}" stroke-width="1"/>')
     peak = max(range(len(data)), key=lambda i: data[i][2])
     peak_month = ["January", "February", "March", "April", "May", "June", "July", "August", "September",
                   "October", "November", "December"][int(data[peak][0][5:]) - 1]
