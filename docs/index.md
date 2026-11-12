@@ -98,6 +98,7 @@ I asked Daniel Stenberg, who maintains curl, if this is different for a project 
 - Every advisory in the tables was reviewed eventually, so the real wait is longer than what I'm showing. GitHub has issued CVEs since May for at least 842 advisories in ecosystems it reviews that still weren't in the database when I collected the data, and half of those had been waiting more than 135 days.
 - It's too early to read the last two months. Eleven days after June ended it looked the way October does now, about 7 days, and it finished at 37. March looked low at the same stage and stayed low, so the drop at the end of the chart could be a recovery or June again.
 - Updating on release assumes the fix is in a version you can move to. If it only lands in a new major version, or it's several levels down in your dependency tree, it takes more than a version bump.
+- Where an advisory lists more than one fixed version, I counted from the earliest. Most were published within a day of each other, and counting from the latest changes the summer median by less than a day.
 - This only covers the package ecosystems GitHub reviews. It doesn't say anything about operating system packages.
 
 None of this needs a new tool. The fixed version was there the whole time, and both of the common update bots will propose it without waiting for an advisory. How a program makes use of that is its own call. For my part, the next time I ship a fix, I won't expect anyone's scanner to notice for a while, and I'd rather their update bot got there first.
